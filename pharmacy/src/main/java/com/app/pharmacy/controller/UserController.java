@@ -2,6 +2,7 @@ package com.app.pharmacy.controller;
 
 import com.app.pharmacy.model.*;
 import com.app.pharmacy.model.dao.*;
+import com.app.pharmacy.model.dto.TransactionDto;
 import com.app.pharmacy.model.dto.UserDto;
 import com.app.pharmacy.model.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,16 +36,6 @@ public class UserController {
         return "{\"message\": \"samples-added\"}";
     }
 
-    @GetMapping("/top/{limit}")
-    public List<UserDto> getTop5Users(@PathVariable int limit) {
-        if (limit < 0) limit = 0;
-        List<User> users = userDao.getTopUsersByPointsSum(limit);
-        return users
-                .stream()
-                .map(UserDto::getUserDtoByUser)
-                .collect(Collectors.toList());
-    }
-
     @GetMapping("/all")
     public List<UserDto> getAllUsers() {
         List<User> users = userDao.findAll();
@@ -60,9 +51,10 @@ public class UserController {
         return UserDto.getUserDtoByUser(user);
     }
 
+    // napisac metode do Dao
     @GetMapping("/{id}/projects")
-    public List<ProjectDto> getProjectsByUserId(@PathVariable Long id){
-        List<Project> projects = projectMembersDao.getProjectsByUserId(id);
+    public List<TransactionDto> getTransactionsByUserId(@PathVariable Long id){
+        List<Transaction> projects = projectMembersDao.getProjectsByUserId(id);
         return projects
                 .stream()
                 .map(ProjectDto::getProjectDtoByProject)
