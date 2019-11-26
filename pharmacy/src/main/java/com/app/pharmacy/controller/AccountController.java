@@ -16,7 +16,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/account")
 public class AccountController {
-//initial
+
     private final AccountDao accountDao;
     private final UserDao userDao;
 
