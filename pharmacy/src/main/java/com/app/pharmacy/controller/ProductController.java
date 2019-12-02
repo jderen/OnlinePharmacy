@@ -2,6 +2,7 @@ package com.app.pharmacy.controller;
 
 import com.app.pharmacy.model.Product;
 import com.app.pharmacy.model.Transaction;
+import com.app.pharmacy.model.User;
 import com.app.pharmacy.model.dao.ProductDao;
 import com.app.pharmacy.model.dao.TransactionDao;
 import com.app.pharmacy.model.dto.ProductDto;
@@ -32,4 +33,6 @@ public class ProductController {
                 .map(ProductDto::getProductDtoByProduct)
                 .collect(Collectors.toList());
     }
+
+
 }
