@@ -23,10 +23,12 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserDao userDao;
+    private final TransactionDao transactionDao;
 
     @Autowired
-    public UserController(UserDao userDao) {
+    public UserController(UserDao userDao, TransactionDao transactionDao) {
         this.userDao = userDao;
+        this.transactionDao = transactionDao;
     }
 
     @GetMapping("/addSamples")
@@ -45,29 +47,19 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/{id}/transactions")
+    public List<TransactionDto> getTransactionsByUserId(@PathVariable Long id){
+        List<Transaction> transactions = transactionDao.getTransactionsByUserId(id);
+        return transactions
+                .stream()
+                .map(TransactionDto::getTransactionDtoByTransaction)
+                .collect(Collectors.toList());
+    }
+
     @GetMapping("/{id}")
     public UserDto getUserById(@PathVariable Long id) {
         User user = userDao.findById(id).orElseThrow(NullPointerException::new);
         return UserDto.getUserDtoByUser(user);
-    }
-
-    // napisac metode do Dao
-    @GetMapping("/{id}/projects")
-    public List<TransactionDto> getTransactionsByUserId(@PathVariable Long id){
-        List<Transaction> projects = projectMembersDao.getProjectsByUserId(id);
-        return projects
-                .stream()
-                .map(ProjectDto::getProjectDtoByProject)
-                .collect(Collectors.toList());
-    }
-
-    @GetMapping("/{id}/activities")
-    public List<TransactionDto> getTransactionsByUserId(@PathVariable Long id){
-        List<Activity> activities=activityResultDao.getActivitiesByUserId(id);
-        return activities
-                .stream()
-                .map(ActivityDto::getActivityDtoByActivity)
-                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}/role")

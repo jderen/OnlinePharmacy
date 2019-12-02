@@ -3,6 +3,7 @@ package com.app.pharmacy.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +20,11 @@ public class Product {
     @GeneratedValue
     private Long id;
     private Long number;
-    private Long cost;
+    private BigDecimal cost;
     private String name;
     private String description;
     private boolean prescriptionRequired;
+    private String image;
 
 
    @ManyToMany(mappedBy = "products")
