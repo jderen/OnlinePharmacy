@@ -5,4 +5,5 @@ import com.app.pharmacy.model.dao.generic.GenericDao;
 
 
 public interface ProductDao extends GenericDao<Product> {
+    String getPhotoPathByProductId(Long id);
 }

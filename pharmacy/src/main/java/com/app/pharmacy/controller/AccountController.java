@@ -82,6 +82,4 @@ public class AccountController {
         registrationData.forEach(this::register);
         return Collections.singletonMap("message", "samples added (if not already in db)");
     }
-
-
 }
