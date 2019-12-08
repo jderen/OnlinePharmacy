@@ -26,6 +26,7 @@ public class AccountController {
         this.userDao = userDao;
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/login")
     public Map<String, String> login(@RequestBody AccountDto accountDto) {
         Long accountId=accountDao.getIdByLogin(accountDto.getLogin()).orElse(-1L);

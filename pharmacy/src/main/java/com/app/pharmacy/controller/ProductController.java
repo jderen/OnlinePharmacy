@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.*;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -68,10 +70,10 @@ public class ProductController {
         return Arrays.asList(p1,p2,p3,p4,p5,p6);
     }
 
-    @RequestMapping(value = "/{id}/photo", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    @RequestMapping(value = "/{id}/image", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getImage(@PathVariable Long id) throws IOException {
 
-        var imgFile = new ClassPathResource(productDao.getPhotoPathByProductId(id));
+        var imgFile = new ClassPathResource(productDao.getImagePathByProductId(id));
         byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
         return ResponseEntity
                 .ok()

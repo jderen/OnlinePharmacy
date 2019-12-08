@@ -9,11 +9,11 @@ import javax.persistence.Query;
 @Repository
 public class ProductDaoImpl extends AbstractGenericDao<Product> implements ProductDao {
     @Override
-    public String getPhotoPathByProductId(Long id) {
+    public String getImagePathByProductId(Long id) {
         String path = "";
         if (getEntityManager() != null){
             Query query = getEntityManager().createQuery(
-                    "SELECT p.photo FROM " + geteClass().getCanonicalName() + " p WHERE p.id = :id"
+                    "SELECT p.image FROM " + geteClass().getCanonicalName() + " p WHERE p.id = :id"
             );
             query.setParameter("id", id);
             path = (String) query.getSingleResult();
