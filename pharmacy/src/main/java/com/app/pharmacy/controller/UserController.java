@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -63,7 +62,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/role")
-    public Map<String, Object> isEmployee(@PathVariable Long id){
+    public Map<String, Object> findRoleOfUser(@PathVariable Long id){
         Map<String, Object> response = new HashMap<>();
         Role role = userDao.getRole(id);
         response.put("id", id);
