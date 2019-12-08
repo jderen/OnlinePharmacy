@@ -7,11 +7,9 @@ import com.app.pharmacy.model.dao.UserDao;
 import com.app.pharmacy.model.dto.TransactionDto;
 import com.app.pharmacy.model.dto.UserDto;
 import com.app.pharmacy.model.enums.Role;
+import com.app.pharmacy.model.enums.Status;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -37,5 +35,39 @@ public class TransactionController {
                 .stream()
                 .map(TransactionDto::getTransactionDtoByTransaction)
                 .collect(Collectors.toList());
+    }
+
+    @PostMapping("/add")
+    public TransactionDto addTransaction(TransactionDto transactionDto){
+        Transaction transaction= TransactionDto.getTransactionByTransactionDto(transactionDto);
+        return TransactionDto.getTransactionDtoByTransaction(transactionDao.insert(transaction));
+    }
+
+    @PostMapping("{id}/accept")
+    public void changeTransactionStatusToStatusAcceptedByTransactionId(@PathVariable Long id){
+        Transaction transaction = transactionDao.findById(id).orElseThrow(NullPointerException::new);
+        transaction.setStatus(Status.ACCEPTED);
+        transactionDao.update(transaction);
+    }
+
+    @PostMapping("{id}/receive")
+    public void changeTransactionStatusToStatusReceivedByTransactionId(@PathVariable Long id){
+        Transaction transaction = transactionDao.findById(id).orElseThrow(NullPointerException::new);
+        transaction.setStatus(Status.RECEIVED);
+        transactionDao.update(transaction);
+    }
+
+    @PostMapping("{id}/realise")
+    public void changeTransactionStatusToStatusRealisedByTransactionId(@PathVariable Long id){
+        Transaction transaction = transactionDao.findById(id).orElseThrow(NullPointerException::new);
+        transaction.setStatus(Status.REALISED);
+        transactionDao.update(transaction);
+    }
+
+    @PostMapping("{id}/cancel")
+    public void changeTransactionStatusToStatusCancelledByTransactionId(@PathVariable Long id){
+        Transaction transaction = transactionDao.findById(id).orElseThrow(NullPointerException::new);
+        transaction.setStatus(Status.CANCELLED);
+        transactionDao.update(transaction);
     }
 }
