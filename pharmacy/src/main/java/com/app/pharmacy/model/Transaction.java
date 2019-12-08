@@ -37,6 +37,8 @@ public class Transaction {
     inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products = new ArrayList<>();
 
+    private boolean prescriptionRequired;
+
     public Transaction(Long id) {
         this.id = id;
     }
