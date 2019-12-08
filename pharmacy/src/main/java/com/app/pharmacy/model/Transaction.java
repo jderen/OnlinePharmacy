@@ -36,4 +36,8 @@ public class Transaction {
     joinColumns = @JoinColumn(name = "transaction_id"),
     inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products = new ArrayList<>();
+
+    public Transaction(Long id) {
+        this.id = id;
+    }
 }
