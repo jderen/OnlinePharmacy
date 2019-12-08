@@ -1,20 +1,13 @@
 package com.app.pharmacy.controller;
 
 import com.app.pharmacy.model.Transaction;
-import com.app.pharmacy.model.User;
 import com.app.pharmacy.model.dao.TransactionDao;
-import com.app.pharmacy.model.dao.UserDao;
 import com.app.pharmacy.model.dto.TransactionDto;
-import com.app.pharmacy.model.dto.UserDto;
-import com.app.pharmacy.model.enums.Role;
 import com.app.pharmacy.model.enums.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
