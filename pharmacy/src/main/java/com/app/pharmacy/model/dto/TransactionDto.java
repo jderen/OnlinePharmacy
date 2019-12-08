@@ -22,6 +22,7 @@ public class TransactionDto {
     private Long number;
     private String status;
     private Long userId;
+    private Boolean prescriptionRequired;
 
 
     public static Transaction getTransactionByTransactionDto(TransactionDto transactionDto){
@@ -30,6 +31,7 @@ public class TransactionDto {
                 .number(transactionDto.number)
                 .status(Status.valueOf(transactionDto.getStatus()))
                 .user(new User(transactionDto.userId))
+                .prescriptionRequired(transactionDto.prescriptionRequired)
                 .prescriptions(new ArrayList<>())
                 .products(new ArrayList<>())
                 .build();
@@ -41,6 +43,7 @@ public class TransactionDto {
                 .number(transaction.getNumber())
                 .status(transaction.getStatus() == null ? null : transaction.getStatus().name())
                 .userId(transaction.getUser() == null ? null : transaction.getUser().getId())
+                .prescriptionRequired(transaction.isPrescriptionRequired())
                 .build();
     }
 }
