@@ -36,8 +36,7 @@ public class ProductController {
     public ProductController(ProductDao productDao) {
         this.productDao = productDao;
     }
-
-    @CrossOrigin(origins = "http://localhost:3000")
+    
     @GetMapping("/all")
     public List<ProductDto> findAll() {
         List<Product> products = productDao.findAll();
