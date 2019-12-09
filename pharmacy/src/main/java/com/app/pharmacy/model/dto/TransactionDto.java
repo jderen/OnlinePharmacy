@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import java.util.ArrayList;
+import java.util.List;
 
 
 @Data
@@ -23,6 +24,7 @@ public class TransactionDto {
     private String status;
     private Long userId;
     private Boolean prescriptionRequired;
+    private List<Long> productIds;
 
 
     public static Transaction getTransactionByTransactionDto(TransactionDto transactionDto){
