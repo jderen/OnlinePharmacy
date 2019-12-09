@@ -1,18 +1,25 @@
 package com.app.pharmacy.controller;
 
+import com.app.pharmacy.model.Product;
 import com.app.pharmacy.model.Transaction;
+import com.app.pharmacy.model.dao.ProductDao;
 import com.app.pharmacy.model.dao.TransactionDao;
 import com.app.pharmacy.model.dto.TransactionDto;
 import com.app.pharmacy.model.enums.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/transaction")
 public class TransactionController {
+
+    @Inject
+    ProductDao productDao;
 
     private final TransactionDao transactionDao;
 
@@ -31,9 +38,19 @@ public class TransactionController {
     }
 
     @PostMapping("/add")
-    public TransactionDto addTransaction(TransactionDto transactionDto){
+    public TransactionDto addTransaction(@RequestBody TransactionDto transactionDto){
+        List <Product> products = new ArrayList<>();
+        transactionDto.getProductIds().forEach(id ->
+            products.add(productDao.findById(id).orElseThrow(NullPointerException::new))
+            );
         Transaction transaction= TransactionDto.getTransactionByTransactionDto(transactionDto);
+        transaction.setProducts(products);
         return TransactionDto.getTransactionDtoByTransaction(transactionDao.insert(transaction));
+    }
+
+    @RequestMapping(value = "/{productsIds}", method = RequestMethod.GET)
+    public void getProductsIds(@PathVariable List<Long> productsIds) {
+
     }
 
     @PostMapping("{id}/accept")
