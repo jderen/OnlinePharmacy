@@ -4,6 +4,7 @@ import com.app.pharmacy.model.Product;
 import com.app.pharmacy.model.Transaction;
 import com.app.pharmacy.model.dao.ProductDao;
 import com.app.pharmacy.model.dao.TransactionDao;
+import com.app.pharmacy.model.dto.ProductDto;
 import com.app.pharmacy.model.dto.TransactionDto;
 import com.app.pharmacy.model.enums.Status;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +32,19 @@ public class TransactionController {
     @GetMapping("/all")
     public List<TransactionDto> findAll() {
         List<Transaction> transactions = transactionDao.findAll();
-        return transactions
+        List<TransactionDto> transactionDtos = transactions
                 .stream()
                 .map(TransactionDto::getTransactionDtoByTransaction)
                 .collect(Collectors.toList());
+        transactionDtos.forEach(transactionDto -> {
+            List<Product> products = new ArrayList<>();
+            List<ProductDto> productDtos = new ArrayList<>();
+            transactionDto.getProductIds().
+                    forEach(id -> products.add(productDao.findById(id).orElseThrow(NullPointerException::new)));
+            productDtos = products.stream().map(ProductDto::getProductDtoByProduct).collect(Collectors.toList());
+            transactionDto.setProductsAll(productDtos);
+        });
+        return transactionDtos;
     }
 
     @PostMapping("/add")
@@ -46,11 +56,6 @@ public class TransactionController {
         Transaction transaction= TransactionDto.getTransactionByTransactionDto(transactionDto);
         transaction.setProducts(products);
         return TransactionDto.getTransactionDtoByTransaction(transactionDao.insert(transaction));
-    }
-
-    @RequestMapping(value = "/{productsIds}", method = RequestMethod.GET)
-    public void getProductsIds(@PathVariable List<Long> productsIds) {
-
     }
 
     @PostMapping("{id}/accept")
