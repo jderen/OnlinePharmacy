@@ -25,6 +25,7 @@ public class TransactionDto {
     private Long userId;
     private Boolean prescriptionRequired;
     private List<Long> productIds;
+    private List<ProductDto> productsAll;
 
 
     public static Transaction getTransactionByTransactionDto(TransactionDto transactionDto){
@@ -40,12 +41,15 @@ public class TransactionDto {
     }
 
     public static TransactionDto getTransactionDtoByTransaction(Transaction transaction){
+        List<Long> ids = new ArrayList<>();
+        transaction.getProducts().forEach(product -> ids.add(product.getId()));
         return TransactionDto.builder()
                 .id(transaction.getId())
                 .number(transaction.getNumber())
                 .status(transaction.getStatus() == null ? null : transaction.getStatus().name())
                 .userId(transaction.getUser() == null ? null : transaction.getUser().getId())
                 .prescriptionRequired(transaction.isPrescriptionRequired())
+                .productIds(ids)
                 .build();
     }
 }
