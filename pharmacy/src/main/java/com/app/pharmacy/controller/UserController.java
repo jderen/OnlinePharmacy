@@ -2,6 +2,7 @@ package com.app.pharmacy.controller;
 
 import com.app.pharmacy.model.*;
 import com.app.pharmacy.model.dao.*;
+import com.app.pharmacy.model.dto.ProductDto;
 import com.app.pharmacy.model.dto.TransactionDto;
 import com.app.pharmacy.model.dto.UserDto;
 import com.app.pharmacy.model.enums.Role;
@@ -11,10 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -23,11 +21,13 @@ public class UserController {
 
     private final UserDao userDao;
     private final TransactionDao transactionDao;
+    private final ProductDao productDao;
 
     @Autowired
-    public UserController(UserDao userDao, TransactionDao transactionDao) {
+    public UserController(UserDao userDao, TransactionDao transactionDao, ProductDao productDao) {
         this.userDao = userDao;
         this.transactionDao = transactionDao;
+        this.productDao = productDao;
     }
 
     @GetMapping("/addSamples")
@@ -49,10 +49,19 @@ public class UserController {
     @GetMapping("/{id}/transactions")
     public List<TransactionDto> getTransactionsByUserId(@PathVariable Long id){
         List<Transaction> transactions = transactionDao.getTransactionsByUserId(id);
-        return transactions
+        List<TransactionDto> transactionDtos = transactions
                 .stream()
                 .map(TransactionDto::getTransactionDtoByTransaction)
                 .collect(Collectors.toList());
+        transactionDtos.forEach(transactionDto -> {
+            List<Product> products = new ArrayList<>();
+            List<ProductDto> productDtos = new ArrayList<>();
+            transactionDto.getProductIds().
+                    forEach(idProduct -> products.add(productDao.findById(idProduct).orElseThrow(NullPointerException::new)));
+            productDtos = products.stream().map(ProductDto::getProductDtoByProduct).collect(Collectors.toList());
+            transactionDto.setProductsAll(productDtos);
+        });
+        return transactionDtos;
     }
 
     @GetMapping("/{id}")
