@@ -51,8 +51,8 @@ public class TransactionController {
     public TransactionDto addTransaction(@RequestBody TransactionDto transactionDto){
         List <Product> products = new ArrayList<>();
         transactionDto.getProductIds().forEach(id ->
-            products.add(productDao.findById(id).orElseThrow(NullPointerException::new))
-            );
+                products.add(productDao.findById(id).orElseThrow(NullPointerException::new))
+        );
         Transaction transaction= TransactionDto.getTransactionByTransactionDto(transactionDto);
         transaction.setProducts(products);
         return TransactionDto.getTransactionDtoByTransaction(transactionDao.insert(transaction));
